@@ -315,12 +315,10 @@ FROM core-base AS desktop-builder
               -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
               -DVCPKG_MANIFEST_MODE=ON \
               -DVCPKG_MANIFEST_DIR="/core" \
-              -DEO_CORE_OUTPUT_DIR=/desktopeditors/converter \
-              -DEO_CORE_TOOLS_DIR=/desktopeditors/converter \
               /desktop-apps/win-linux/ && \
-        cmake --build . --target clean  && \
         cmake --build . && \
-        cmake --install .
+        cmake --install . && \
+        cp -a desktopeditors /desktopeditors
     
     COPY --from=sdkjs-desktop ${BUILD_ROOT} /desktopeditors/editors/
     COPY --from=web-apps ${BUILD_ROOT} /desktopeditors/editors/
