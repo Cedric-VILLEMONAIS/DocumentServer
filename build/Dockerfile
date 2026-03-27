@@ -1,7 +1,8 @@
 ARG PACKAGE_BASE=finalubuntu
+ARG BASE_IMAGE=ghcr.io/euro-office/ds-base:latest
 
 #### BASE ####
-FROM ubuntu:24.04 AS base
+FROM $BASE_IMAGE AS base
     RUN apt-get update && \
         apt-get install -y ca-certificates curl gnupg openjdk-21-jdk wget zip brotli && \
         curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
@@ -10,7 +11,7 @@ FROM ubuntu:24.04 AS base
         rm -rf /var/lib/apt/lists/*
 
 #### CORE ####
-FROM ubuntu:24.04 AS core
+FROM $BASE_IMAGE AS core
 ARG BUILD_ROOT=/package
 ARG TARGETARCH
 
@@ -204,7 +205,7 @@ FROM scratch AS example
     COPY --from=build-example /app/ /example
 
 #### FINAL UBUNTU ####
-FROM ubuntu:24.04 AS finalubuntu
+FROM $BASE_IMAGE AS finalubuntu
 ARG PRODUCT_VERSION
 ARG BUILD_ROOT=/package
 
